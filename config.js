@@ -11,18 +11,18 @@ let config = {
   port: 9080,
 
   // electron-packager options
-  // Docs: https://simulatedgreg.gitbooks.io/electron-vue/content/docs/building_your_app.html
+  // Docs: https://github.com/electron-userland/electron-packager/blob/master/docs/api.md
   building: {
-    'app-version': pkg.version,
-    arch: ['x64', 'ia32'], // ia32, x64, armv7l, all
+    appVersion: pkg.version,
+    arch: ['x64', 'ia32'],
     asar: true,
-    dir: path.join(__dirname, 'app'),
+    dir: path.join(__dirname, 'app'), // Directory of the app
     icon: path.join(__dirname, 'app/icons/icon'),
     ignore: /src|main.ejs|icons/,
+    name: pkg.product,
     out: path.join(__dirname, 'builds'),
     overwrite: true,
-    platform: process.env.PLATFORM_TARGET || 'all',
-    name: pkg.product
+    platform: process.env.PLATFORM_TARGET || 'all'
   },
 
   isDev: process.env.NODE_ENV === 'development',
