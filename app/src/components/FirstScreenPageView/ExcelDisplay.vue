@@ -16,7 +16,7 @@
           <img src="../assets/svg/excel_display_warm.svg" alt="[警告]">当前没有选中任何Excel文件，可将文件拖拽至此区域。
         </p>
       </div>
-      <sheet-of-excel v-for="(sheetName, index) in sheetNameList" v-show="activeSheet.index === index" :sheetHTML="sheetHTML">
+      <sheet-of-excel v-for="(sheetName, index) in sheetNameList" :key="index" v-show="activeSheet.index === index" :sheetHTML="sheetHTML">
       </sheet-of-excel>
     </div>
   </div>

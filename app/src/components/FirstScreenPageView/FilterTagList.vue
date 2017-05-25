@@ -5,7 +5,7 @@
     </div>
     <unique-tag :unique-cols="uniqueCols[activeSheetName]" :cur-filter-tag-list="filterTagList[activeSheetName]" v-if="uniqueCols[activeSheetName] && uniqueCols[activeSheetName].length > 0">
     </unique-tag>
-    <filter-tag v-for="(filterTag, index) in filterTagList[activeSheetName]" :filter-tag="filterTag" :tag-index="index">
+    <filter-tag v-for="(filterTag, index) in filterTagList[activeSheetName]" :key="index" :filter-tag="filterTag" :tag-index="index">
     </filter-tag>
   </div>
 </template>
