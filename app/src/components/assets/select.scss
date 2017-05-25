@@ -1,9 +1,8 @@
 @charset "UTF-8";
-.select{
+.select {
   position: relative;
   display: inline-block;
   width: 62px;
-
   select {
     -webkit-appearance: none;
     appearance: none;
@@ -31,13 +30,13 @@
     transform: translateY(-2px);
     pointer-events: none;
   }
-  p{
+  p {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    font-size:12px;
+    font-size: 12px;
     line-height: 26px;
     text-align: center;
     pointer-events: none;

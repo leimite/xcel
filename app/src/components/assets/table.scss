@@ -1,5 +1,4 @@
 @charset "UTF-8";
-
 .table {
   box-sizing: border-box;
   background-color: #fff;
@@ -40,8 +39,8 @@
   padding: 0;
 }
 
-.table td.is_icon.is_link > a,
-.table th.is_icon.is_link > a {
+.table td.is_icon.is_link>a,
+.table th.is_icon.is_link>a {
   padding: 5px;
 }
 
@@ -50,14 +49,14 @@
   padding: 0;
 }
 
-.table td.is_link > a,
-.table th.is_link > a {
+.table td.is_link>a,
+.table th.is_link>a {
   display: block;
   padding: 8px 10px;
 }
 
-.table td.is_link > a:hover,
-.table th.is_link > a:hover {
+.table td.is_link>a:hover,
+.table th.is_link>a:hover {
   background-color: #1fc8db;
   color: white;
 }
@@ -120,8 +119,8 @@
   padding: 0;
 }
 
-.table.is_narrow td.is_icon.is_link > a,
-.table.is_narrow th.is_icon.is_link > a {
+.table.is_narrow td.is_icon.is_link>a,
+.table.is_narrow th.is_icon.is_link>a {
   padding: 2px;
 }
 
@@ -130,8 +129,8 @@
   padding: 0;
 }
 
-.table.is_narrow td.is_link > a,
-.table.is_narrow th.is_link > a {
+.table.is_narrow td.is_link>a,
+.table.is_narrow th.is_link>a {
   padding: 5px 10px;
 }
 

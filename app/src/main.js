@@ -15,8 +15,8 @@ window.eventBus = new Vue()
 const router = new Router(routes)
 
 new Vue({
-	el: '#app',
-	router: router,
-	store,
-	render: h => h(App)
+  el: '#app',
+  router: router,
+  store,
+  render: h => h(App)
 })

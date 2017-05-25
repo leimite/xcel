@@ -2,10 +2,7 @@
 	<nav class="file_list_container">
 		<div class="file_list">
 			<ul>
-				<li title="双击文件名即可导入" 
-					v-for="(file, index) in fileListByQuery"
-					:class="{cur_file: file.path === fileList[0].path}"
-					@dblclick="confirmRead(file.path ,file)">
+				<li title="双击文件名即可导入" v-for="(file, index) in fileListByQuery" :class="{cur_file: file.path === fileList[0].path}" @dblclick="confirmRead(file.path ,file)">
 					<span>{{ file.extname.replace(/^./, "") }}</span>
 					<p>{{ file.name }}</p>
 					<button class="btn del_btn" @click="confirmDel(file)">删除</button>
@@ -110,66 +107,66 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-	.file_list_container {
-		padding-left: 24px;
-		.file_list {
-			li {
-				display: flex;
-				align-items: center;
-				height: 48px;
-				justify-content: space-between;
-				-webkit-user-select: none;
-				user-select: none;
-				&:hover .del_btn {
-					display: block;
-				}
-				&:not(:first-child) p {
-					color: rgba(0, 0, 0, .87);
-				}
-				&.cur_file {
-					span {
-						background-color: #4285F4;
-					}
-					p {
-						color: #4285F4;
-					}
+.file_list_container {
+	padding-left: 24px;
+	.file_list {
+		li {
+			display: flex;
+			align-items: center;
+			height: 48px;
+			justify-content: space-between;
+			-webkit-user-select: none;
+			user-select: none;
+			&:hover .del_btn {
+				display: block;
+			}
+			&:not(:first-child) p {
+				color: rgba(0, 0, 0, .87);
+			}
+			&.cur_file {
+				span {
+					background-color: #4285F4;
 				}
 				p {
-					flex-grow: 1;
-					font-size: 13px;
-					text-align: left;
-					white-space: nowrap;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					padding-right: 10px;
+					color: #4285F4;
 				}
-				span {
-					display: inline-block;
-					font-size: 10px;
-					margin-right: 16px;
-					width: 40px;
-					text-align: center;
-					border-radius: 2px;
-					line-height: 18px;
-					background-color: #6B727D;
-					color: #fff;
-					flex-shrink: 0;
-				}
-				.btn {
-					margin-right: 10px;
-					display: none;
-					flex-shrink: 0;
-				}
+			}
+			p {
+				flex-grow: 1;
+				font-size: 13px;
+				text-align: left;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				padding-right: 10px;
+			}
+			span {
+				display: inline-block;
+				font-size: 10px;
+				margin-right: 16px;
+				width: 40px;
+				text-align: center;
+				border-radius: 2px;
+				line-height: 18px;
+				background-color: #6B727D;
+				color: #fff;
+				flex-shrink: 0;
+			}
+			.btn {
+				margin-right: 10px;
+				display: none;
+				flex-shrink: 0;
 			}
 		}
 	}
+}
 
-	.del_btn {
-		background-color: #FF4081;
-		color: #fff;
-		border: 0;
-		outline: 0;
-		font-size: 12px;
-		cursor: pointer;
-	}
+.del_btn {
+	background-color: #FF4081;
+	color: #fff;
+	border: 0;
+	outline: 0;
+	font-size: 12px;
+	cursor: pointer;
+}
 </style>
