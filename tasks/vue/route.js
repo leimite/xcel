@@ -22,8 +22,8 @@ routes.splice(
   routes.length - 2,
   0,
   routesTemplate
-    .replace(//g, routeName)
-    .replace(/\n$/, '')
+  .replace(/ /g, routeName)
+  .replace(/\n$/, '')
 )
 
 fs.writeFileSync(
@@ -39,8 +39,7 @@ fs.writeFileSync(
 )
 
 console.log(`\n\x1b[33m[vue]\x1b[0m  route "${routeName}" has been created`)
-console.log('  [ \n' + [
-  '    ' + path.join(__dirname, `../../app/src/components/${routeName}View.vue`),
+console.log('  [ \n' + ['    ' + path.join(__dirname, `../../app/src/components/${routeName}View.vue`),
   path.join(__dirname, `../../app/src/components/${routeName}View`),
   path.join(__dirname, '../../app/src/routes.js'),
 ].join(',\n    ') + '\n  ]')
