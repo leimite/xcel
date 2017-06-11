@@ -1,0 +1,9 @@
+{
+  "extends": "eslint-config-o2team",
+  "plugins": [
+    "vue"
+  ],
+  "rules": {
+    "no-multiple-empty-lines": [ 1,{ "max": 1 } ]
+  }
+}
