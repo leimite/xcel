@@ -1,46 +1,53 @@
 <template>
-  <div class="col_sel_modal" :class="{'active': colSelectDialogStatus}">
-    <div class="col_sel_dialog">
-      <div class="col_sel_dialog_header">
-        <div>
-          <img src="../assets/svg/col_select_dialog_i.svg" alt="[!]">
-          <h4>请选择列</h4>
-        </div>
-        <div class="selected_col_container">
-          <p>{{ selectedGroupStr }}</p>
-          <button type="button" class="invert_selection_btn" title="点击该按钮进行反选" v-show="curColCount > 0 && colSelectType === 3" @click="invertSelectionHandler">
-            {{ btnText }}
-          </button>
-        </div>
-      </div>
-      <div class="col_sel_dialog_content">
-        <p class="no_content_tips" v-if="curColCount === 0">
-          请先上传Excel文件或该文件未含有列
-        </p>
-        <ul v-else>
-          <li v-for="(item, index) in curColKeys" @click="toggleSelect(index)" :class="{'active': selectedGroup.includes(index)}">
-            <div>
-              <span>{{ getCharCol(index) }}</span>
-              <p>{{ item }}</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div class="col_sel_dialog_footer">
-        <div v-if="curColCount === 0">
-          <button type="button" @click="closeDialog" style="font-size: 16px">确定</button>
-        </div>
-        <div v-else>
-          <button type="button" @click="closeDialog">
-            <img src="../assets/svg/col_select_dialog_close.svg" alt="关闭">
-          </button>
-          <button type="button" @click="submit">
-            <img src="../assets/svg/col_select_dialog_confirm.svg" alt="确认">
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="col_sel_modal" :class="{'active': colSelectDialogStatus}">
+		<div class="col_sel_dialog">
+			<div class="col_sel_dialog_header">
+				<div>
+					<img src="../assets/svg/col_select_dialog_i.svg" alt="[!]">
+					<h4>请选择列</h4>
+				</div>
+				<div class="selected_col_container">
+					<p>{{ selectedGroupStr }}</p>
+					<button type="button"
+						class="invert_selection_btn"
+						title="点击该按钮进行反选"
+						v-show="curColCount > 0 && colSelectType === 3"
+						@click="invertSelectionHandler">
+						{{ btnText }}
+					</button>
+				</div>
+			</div>
+			<div class="col_sel_dialog_content">
+				<p class="no_content_tips"
+					v-if="curColCount === 0">
+					请先上传Excel文件或该文件未含有列
+				</p>
+				<ul v-else>
+					<li v-for="(item, index) in curColKeys"
+						@click="toggleSelect(index)"
+						:class="{'active': selectedGroup.includes(index)}">
+						<div>
+							<span>{{ getCharCol(index) }}</span>
+							<p>{{ item }}</p>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="col_sel_dialog_footer">
+				<div v-if="curColCount === 0">
+					<button type="button" @click="closeDialog" style="font-size: 16px">确定</button>
+				</div>
+				<div v-else>
+					<button type="button" @click="closeDialog">
+						<img src="../assets/svg/col_select_dialog_close.svg" alt="关闭">
+					</button>
+					<button type="button" @click="submit">
+						<img src="../assets/svg/col_select_dialog_confirm.svg" alt="确认">
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
@@ -49,22 +56,22 @@ import { getCharCol } from '../../utils/ExcelSet'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  data() {
+  data () {
     return {
       selectedGroup: []
     }
   },
   computed: {
-    selectedGroupStr() {
-      return this.selectedGroup.map((item, index) => {
-        return this.getCharCol(item)
-      }).join('、')
+    selectedGroupStr () {
+      return this.selectedGroup.map((item, index) =>
+        this.getCharCol(item)
+      ).join('、')
     },
-    btnText() {
-      let selectedGroupLength = this.selectedGroup.length
+    btnText () {
+      const selectedGroupLength = this.selectedGroup.length
       if (selectedGroupLength === 0) return '全选'
       else if (selectedGroupLength === this.curColCount) return '全不选'
-      else return '反选'
+      return '反选'
     },
     ...mapGetters({
       curColKeys: 'getCurColKeys',
@@ -75,16 +82,16 @@ export default {
   },
   methods: {
     getCharCol,
-    closeDialog() {
+    closeDialog () {
       this.selectedGroup = []
       this.setColSelectDialogStatus(false)
     },
-    submit() {
-      let colSelectType = this.colSelectType,
-        colSelectGroup = this.selectedGroup,
-        colSelectLen = colSelectGroup.length,
-        eventBus = window.eventBus,
-        warmStr = ''
+    submit () {
+      let warmStr = ''
+      const colSelectType = this.colSelectType
+      const colSelectGroup = this.selectedGroup
+      const colSelectLen = colSelectGroup.length
+      const eventBus = window.eventBus
       if (this.curColCount === 0) {
         ipcRenderer.send('sync-alert-dialog', {
           content: 'Excel文件未上传或未含有列'
@@ -111,7 +118,7 @@ export default {
         }
       } else if (colSelectType === 3) {
         if (colSelectLen === 0) {
-          warmStr = "多列去重逻辑至少选择一列"
+          warmStr = '多列去重逻辑至少选择一列'
         } else {
           eventBus.$emit('colSelVal4Remove', colSelectGroup)
         }
@@ -126,23 +133,23 @@ export default {
         })
       }
     },
-    toggleSelect(index) {
-      let selectedGroup = this.selectedGroup,
-        colSelectType = this.colSelectType
+    toggleSelect (index) {
+      const selectedGroup = this.selectedGroup
+      const colSelectType = this.colSelectType
 
       if (colSelectType === 0) {
         selectedGroup.splice(0, 1, index)
       } else if (colSelectType === 1 || colSelectType === 3) {
         if (selectedGroup.includes(index)) {
-          let i = selectedGroup.indexOf(index)
+          const i = selectedGroup.indexOf(index)
           selectedGroup.splice(i, 1)
         } else {
           selectedGroup.push(index)
         }
       } else if (colSelectType === 2) {
-        if (selectedGroup.length <= 2) {
+        if (selectedGroup.length < 3) {
           if (selectedGroup.includes(index)) {
-            let i = selectedGroup.indexOf(index)
+            const i = selectedGroup.indexOf(index)
             selectedGroup.splice(i, 1)
           } else if (selectedGroup.length < 2) {
             selectedGroup.push(index)
@@ -150,26 +157,22 @@ export default {
         }
       }
     },
-    invertSelectionHandler() {
-      let selectedGroup = this.selectedGroup,
-        curColKeys = this.curColKeys,
-        tempSelectedGroup = []
+    invertSelectionHandler () {
+      const selectedGroup = this.selectedGroup
+      const tempSelectedGroup = []
 
       if (selectedGroup.length === 0) {
         for (let i = 0; i < this.curColCount; i++) {
           this.selectedGroup.push(i)
         }
       } else {
-
         for (let i = 0; i < this.curColCount; i++) {
           if (selectedGroup.indexOf(i) === -1) {
             tempSelectedGroup.push(i)
           }
         }
-
         this.selectedGroup = tempSelectedGroup
       }
-
     },
     ...mapActions([
       'setColSelectDialogStatus'

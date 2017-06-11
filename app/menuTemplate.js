@@ -2,27 +2,29 @@ const electron = require('electron')
 const BrowserWindow = electron.BrowserWindow
 const ipcMain = electron.ipcMain
 
-var template = [{
+const template = [
+  {
     label: 'File',
-    submenu: [{
-      label: 'Open File',
-      accelerator: 'CmdOrCtrl+O',
-      click: function (item, focusedWindow) {
-        ipcMain.emit('sync-openFile-dialog')
+    submenu: [
+      {
+        label: 'Open File',
+        accelerator: 'CmdOrCtrl+O',
+        click (item, focusedWindow) {
+          ipcMain.emit('sync-openFile-dialog')
+        }
       }
-    }]
+    ]
   },
   {
     label: 'View',
-    submenu: [{
+    submenu: [
+      {
         label: 'Reload',
         accelerator: 'CmdOrCtrl+R',
-        click: function (item, focusedWindow) {
-          // console.log("BrowserWindow.getAllWindows()", BrowserWindow.getAllWindows());
+        click (item, focusedWindow) {
           Array.prototype.forEach.call(BrowserWindow.getAllWindows(), (win, i) => {
             win.reload()
           })
-          // if (focusedWindow) focusedWindow.reload()
         }
       },
       {
@@ -30,11 +32,10 @@ var template = [{
         accelerator: (function () {
           if (process.platform === 'darwin') {
             return 'Alt+Command+I'
-          } else {
-            return 'Ctrl+Shift+I'
           }
+          return 'Ctrl+Shift+I'
         })(),
-        click: function (item, focusedWindow) {
+        click (item, focusedWindow) {
           if (focusedWindow) focusedWindow.toggleDevTools()
         }
       },
@@ -43,12 +44,11 @@ var template = [{
         accelerator: (function () {
           if (process.platform === 'darwin') {
             return 'Alt+Command+B'
-          } else {
-            return 'Ctrl+Shift+B'
           }
+          return 'Ctrl+Shift+B'
         })(),
-        click: function (item, focusedWindow) {
-          var backWin = BrowserWindow.fromId(2)
+        click (item, focusedWindow) {
+          const backWin = BrowserWindow.fromId(2)
           if (backWin.isVisible()) {
             backWin.hide()
           } else {
@@ -61,23 +61,23 @@ var template = [{
   },
   {
     label: 'Help',
-    role: 'help'
-    /*,
-        submenu: [
-          {
-            label: 'Learn More',
-            click: function () { require('electron').shell.openExternal('http://electron.atom.io') }
-          }
-        ]*/
+    role: 'help'/*,
+    submenu: [
+      {
+        label: 'Learn More',
+        click: function () { require('electron').shell.openExternal('http://electron.atom.io') }
+      }
+    ] */
   }
 ]
 
 if (process.platform === 'darwin') {
-  var name = electron.app.getName()
-  console.log("appname", name)
+  const name = electron.app.getName()
+  console.log('appname', name)
   template.unshift({
     label: 'Edit',
-    submenu: [{
+    submenu: [
+      {
         label: 'Undo',
         accelerator: 'CmdOrCtrl+Z',
         role: 'undo'
@@ -114,8 +114,9 @@ if (process.platform === 'darwin') {
   })
   template.unshift({
     label: name,
-    submenu: [{
-        label: 'About ' + name,
+    submenu: [
+      {
+        label: `About ${name}`,
         role: 'about'
       },
       {
@@ -130,7 +131,7 @@ if (process.platform === 'darwin') {
         type: 'separator'
       },
       {
-        label: 'Hide ' + name,
+        label: `Hide ${name}`,
         accelerator: 'Command+H',
         role: 'hide'
       },
@@ -149,9 +150,7 @@ if (process.platform === 'darwin') {
       {
         label: 'Quit',
         accelerator: 'Command+Q',
-        click: function () {
-          electron.app.quit()
-        }
+        click () { electron.app.quit() }
       }
     ]
   })

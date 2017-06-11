@@ -1,20 +1,24 @@
 <template>
-  <header>
-    <nav>
-      <div class="toggle_sidebar_btn" :title="isShowInstruction ? '返回' : '打开/关闭侧边栏'" @click="clickHandler">
-        <i class="fa" :class="isShowInstruction ? 'fa-chevron-left' : 'fa-bars'"></i>
-      </div>
-      <div class="filter_way_container" v-show="!isShowInstruction">
-        筛选方式：
-        <label title="符合条件则保留">
-          <input type="radio" value="0" v-model="vuexFilterWay">保留
-        </label>
-        <label title="符合条件则剔除">
-          <input type="radio" value="1" v-model="vuexFilterWay">剔除
-        </label>
-      </div>
-    </nav>
-  </header>
+	<header>
+		<nav>
+			<div class="toggle_sidebar_btn"
+				:title="isShowInstruction ? '返回' : '打开/关闭侧边栏'"
+				@click="clickHandler">
+		    <i class="fa"
+		    	:class="isShowInstruction ? 'fa-chevron-left' : 'fa-bars'"></i>
+			</div>
+			<div class="filter_way_container"
+		  	v-show="!isShowInstruction">
+				筛选方式：
+				<label title="符合条件则保留">
+					<input type="radio" value="0" v-model="vuexFilterWay">保留
+				</label>
+				<label title="符合条件则剔除">
+					<input type="radio" value="1" v-model="vuexFilterWay">剔除
+				</label>
+			</div>
+		</nav>
+	</header>
 </template>
 
 <script>
@@ -22,7 +26,7 @@ import { mapGetters, mapActions } from 'vuex'
 import os from 'os'
 
 export default {
-  data() {
+  data () {
     return {
       isShowNav: false,
       isShowInstruction: this.$route.name === 'instructions',
@@ -31,10 +35,10 @@ export default {
   },
   computed: {
     vuexFilterWay: {
-      get() {
+      get () {
         return this.filterWay
       },
-      set(val) {
+      set (val) {
         this.setFilterWay(val)
       }
     },
@@ -43,7 +47,7 @@ export default {
     })
   },
   methods: {
-    clickHandler() {
+    clickHandler () {
       if (this.isShowInstruction) {
         this.$router.push('index')
       } else {

@@ -1,8 +1,8 @@
-export function getLocal(key) {
-  let localStorage = window.localStorage,
-    valStr
+export function getLocal (key) {
+  const localStorage = window.localStorage
+  let valStr
 
-  if (key !== undefined && key !== null) {
+  if (typeof key !== 'undefined' && key !== null) {
     valStr = localStorage.getItem(key)
   } else {
     return false
@@ -20,11 +20,10 @@ export function getLocal(key) {
   }
 }
 
+export function setLocal (key, val) {
+  const localStorage = window.localStorage
 
-export function setLocal(key, val) {
-  let localStorage = window.localStorage
-
-  if (key !== undefined && key !== null) {
+  if (typeof key !== 'undefined' && key !== null) {
     try {
       localStorage.setItem(key, JSON.stringify(val))
     } catch (e) {

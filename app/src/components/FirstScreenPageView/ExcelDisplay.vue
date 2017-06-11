@@ -1,25 +1,37 @@
 <!-- Excel -->
 <template>
-  <div class="excel_area">
-    <div class="tabs is_boxed is_small excel_cheet_nav" v-show="sheetNameList.length !== 0">
-      <ul>
-        <li v-for="(sheetName, index) in sheetNameList" :class="{'is_active': index == activeSheet.index}" @click="changeTab(index)">
-          <a href="javascript:;">
-            <span>{{ sheetName }}</span>
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div class="tabs_body">
-      <div class="drop_area content" v-show="sheetNameList.length < 1" @drop.prevent.stop="dropHandler" @dragenter="dragenterHandler" @dragleave="dragleaveHandler">
-        <p class="drop_tips">
-          <img src="../assets/svg/excel_display_warm.svg" alt="[警告]">当前没有选中任何Excel文件，可将文件拖拽至此区域。
-        </p>
-      </div>
-      <sheet-of-excel v-for="(sheetName, index) in sheetNameList" :key="index" v-show="activeSheet.index === index" :sheetHTML="sheetHTML">
-      </sheet-of-excel>
-    </div>
-  </div>
+	<div class="excel_area">
+		<div class="tabs is_boxed is_small excel_cheet_nav"
+			v-show="sheetNameList.length !== 0">
+			<ul>
+				<li v-for = "(sheetName, index) in sheetNameList"
+          :key="index"
+					:class="{'is_active': index == activeSheet.index}"
+					@click = "changeTab(index)">
+					<a href="javascript:;">
+						<span>{{ sheetName }}</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="tabs_body">
+			<div class="drop_area content"
+				v-show="sheetNameList.length < 1"
+				@drop.prevent.stop="dropHandler"
+				@dragenter="dragenterHandler"
+				@dragleave="dragleaveHandler"
+				>
+				<p class = "drop_tips">
+					<img src="../assets/svg/excel_display_warm.svg" alt="[警告]">当前没有选中任何Excel文件，可将文件拖拽至此区域。
+				</p>
+			</div>
+			<sheet-of-excel v-for="(sheetName, index) in sheetNameList"
+        :key="index"
+				v-show="activeSheet.index === index"
+				:sheetHTML="sheetHTML">
+			</sheet-of-excel>
+		</div>
+	</div>
 </template>
 
 
@@ -43,7 +55,7 @@ export default {
       this.sheetHTML = sheetHTML
     })
 
-    let dropArea = document.querySelector('.drop_area')
+    const dropArea = document.querySelector('.drop_area')
     if (dropArea) {
       dropArea.addEventListener('dragenter', dragoverHandler, false)
       dropArea.addEventListener('dragover', dragoverHandler, false)
@@ -79,9 +91,9 @@ export default {
     dragleaveHandler(e) {
       e.target.classList.remove('active')
     },
-    dropHandler(e) {
-      let files = e.dataTransfer.files
-      let path = files[0].path
+    dropHandler (e) {
+      const files = e.dataTransfer.files
+      const path = files[0].path
 
       if (!isExcelFile(path)) {
         this.dragleaveHandler(e)
@@ -90,7 +102,7 @@ export default {
         })
       } else {
         this.initAfterImportFile({
-          path: path,
+          path,
           type: 'node'
         })
         this.setUploadFiles(path)

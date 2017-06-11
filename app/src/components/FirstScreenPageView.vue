@@ -36,7 +36,7 @@ export default {
     Loading,
     ColSelDialog
   },
-  data() {
+  data () {
     return {
       osStr: os.platform()
     }

@@ -1,8 +1,6 @@
 'use strict'
 
-const fs = require('fs')
 const path = require('path')
-const pkg = require('./app/package.json')
 const settings = require('./config.js')
 const webpack = require('webpack')
 
@@ -10,9 +8,9 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
-let isProd = process.env.NODE_ENV === 'production';
+const isProd = process.env.NODE_ENV === 'production'
 module.exports = function () {
-  let config = {
+  const config = {
     entry: {
       app: [path.join(__dirname, 'app/src/main.js')],
       // vendor: [
@@ -43,8 +41,8 @@ module.exports = function () {
     },
     module: {
       rules: [{
-          test: /\.vue$/,
-          use: 'vue-loader',
+        test: /\.vue$/,
+        use: 'vue-loader',
           // options: {
           //   loaders: {
           //     css: 'vue-style-loader!css-loader',
@@ -53,44 +51,58 @@ module.exports = function () {
           //     scss: 'vue-style-loader!css-loader!sass-loader'
           //   }
           // }
-        },
-        {
-          test: /\.js$/,
-          use: 'babel-loader',
-          exclude: [new RegExp(`node_modules`)]
-        },
-        {
-          test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-          loader: 'url-loader',
-          query: {
-            limit: 10000,
-            name: 'imgs/[name].[hash:7].[ext]'
-          }
-        },
-        {
-          test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-          loader: 'url-loader',
-          query: {
-            limit: 10000,
-            name: 'fonts/[name].[hash:7].[ext]'
-          }
-        },
-        {
-          test: /\.html$/,
-          use: 'vue-html-loader'
-        },
-        {
-          test: /\.css$/,
-          loader: 'vue-style-loader!css-loader'
-        },
-        {
-          test: /\.sass$/,
-          loader: 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
-        },
-        {
-          test: /\.scss$/,
-          loader: 'vue-style-loader!css-loader!sass-loader'
+      },
+      /* {
+        test: /\.js$/,
+        use: 'babel!eslint',
+        exclude: /node_modules/
+      }, */
+      {
+        test: /\.(js|vue)$/,
+        loader: 'eslint-loader',
+        enforce: 'pre',
+        include: [path.join(__dirname, 'app/src')],
+        options: {
+          formatter: require('eslint-friendly-formatter')
         }
+      },
+      {
+        test: /\.js$/,
+        use: 'babel-loader',
+        exclude: [new RegExp(`node_modules\\${path.sep}(?!vue-bulma-.*)`)]
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        loader: 'url-loader',
+        query: {
+          limit: 10000,
+          name: 'imgs/[name].[hash:7].[ext]'
+        }
+      },
+      {
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        loader: 'url-loader',
+        query: {
+          limit: 10000,
+          name: 'fonts/[name].[hash:7].[ext]'
+        }
+      },
+      {
+        test: /\.html$/,
+        use: 'vue-html-loader'
+      },
+      {
+        test: /\.css$/,
+        loader: 'vue-style-loader!css-loader'
+      },
+      {
+        test: /\.sass$/,
+        loader: 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
+      },
+      {
+        test: /\.scss$/,
+        loader: 'vue-style-loader!css-loader!sass-loader'
+      }
       ]
     },
     devtool: isProd ? '#source-map' : '#eval-source-map',
@@ -114,13 +126,13 @@ module.exports = function () {
       }),
       // new webpack.NoErrorsPlugin(),
       new CopyWebpackPlugin([{
-          from: path.join(__dirname, 'app/src/background'),
-          to: path.join(__dirname, "app/dist/background")
-        },
-        {
-          from: path.join(__dirname, 'app/src/update'),
-          to: path.join(__dirname, "app/dist/update")
-        }
+        from: path.join(__dirname, 'app/src/background'),
+        to: path.join(__dirname, 'app/dist/background')
+      },
+      {
+        from: path.join(__dirname, 'app/src/update'),
+        to: path.join(__dirname, 'app/dist/update')
+      }
       ])
     ],
     target: 'electron',
@@ -134,7 +146,7 @@ module.exports = function () {
     performance: {
       hints: false
     }
-  };
+  }
 
   if (isProd) {
     config.plugins.push(
@@ -158,8 +170,8 @@ module.exports = function () {
       //   name: 'vendor',
       //   filename: 'vendor.js'
       // })
-    );
+    )
   }
 
-  return config;
+  return config
 }

@@ -1,41 +1,50 @@
 <template>
-  <footer class="footer">
-    <ul class="btn_group">
-      <li class="btn search_btn" title="搜索文件" v-show="!isShowInstruction" @click="focusSearchInput" :class="{active: isShowSideBar}">
-        <i class="fa fa-search"></i>
-      </li>
-      <li class="btn upload_btn" title="上传文件" v-show="!isShowInstruction" @click="handleFile">
-        <i class="fa fa-upload"></i>
-      </li>
-      <li class="btn filter_btn" title="添加筛选条件" v-show="!isShowInstruction" @click="clickFilterBtn" :class="{active: isShowFilterPanel}">
-        <i class="fa fa-filter"></i>
-      </li>
-      <li class="btn instruction_btn" title="使用说明" :class="{'active': isShowInstruction}" @click="toggleView">
-        <i class="fa fa-info"></i>
-      </li>
-      <li class="btn update_btn" title="检查更新" @click="checkForUpdate" :class="{active: isShowUpdateDialog}">
-        <i class="fa fa-cloud-download"></i>
-      </li>
-    </ul>
-    <div>
-      <p class="summary_info" v-show="hasFile">
-        筛选后数据为
-        <em>{{ Math.min(curFilRowCount, curOriRowCount) }}</em>
-        行，原始记录为
-        <em>{{ curOriRowCount }}</em>
-        行，共
-        <em>{{ filterAcount }}</em>
-        个{{ filterWay == 0 ? "保留" : "剔除"}}条件
-      </p>
-      <img src="../assets/O2-icon.png" alt="O2_logo" title="凹凸实验室" @click="openExternal('aotu')">
-    </div>
-  </footer>
+	<footer class="footer">
+		<ul class="btn_group">
+			<li class="btn search_btn" title="搜索文件"
+				v-show="!isShowInstruction"
+				@click="focusSearchInput"
+				:class="{active: isShowSideBar}">
+				<i class="fa fa-search"></i>
+			</li>
+			<li class="btn upload_btn" title="上传文件"
+				 v-show="!isShowInstruction"
+				 @click="handleFile">
+				<i class="fa fa-upload"></i>
+			</li>
+			<li class="btn filter_btn" title="添加筛选条件"
+				v-show="!isShowInstruction"
+				@click="clickFilterBtn"
+				:class="{active: isShowFilterPanel}">
+				<i class="fa fa-filter"></i>
+			</li>
+			<li class="btn instruction_btn" title="使用说明"
+				:class="{'active': isShowInstruction}"
+				@click="toggleView">
+				<i class="fa fa-info"></i>
+			</li>
+			<li class="btn update_btn" title="检查更新"
+				@click="checkForUpdate"
+				:class="{active: isShowUpdateDialog}">
+				<i class="fa fa-cloud-download"></i>
+			</li>
+		</ul>
+		<div>
+			<p class="summary_info" v-show="hasFile">
+				筛选后数据为
+				<em>{{ Math.min(curFilRowCount, curOriRowCount) }}</em>
+				行，原始记录为
+				<em>{{ curOriRowCount }}</em>
+				行，共
+				<em>{{ filterAcount }}</em>
+				个{{ filterWay == 0 ? "保留" : "剔除"}}条件
+			</p>
+			<img src="../assets/O2-icon.png" alt="O2_logo" title="凹凸实验室" @click="openExternal('aotu')">
+		</div>
+	</footer>
 </template>
 
 <script>
-import { remote } from 'electron'
-import os from 'os'
-import pathModule from 'path'
 import { ipcRenderer } from 'electron'
 import { isExcelFile } from '../../utils/ExcelSet'
 import request from 'request'
@@ -47,16 +56,16 @@ import { mapGetters, mapActions } from 'vuex'
 let firstTime = true
 
 export default {
-  data() {
+  data () {
     return {
       isShowInstruction: this.$route.name === 'instructions'
     }
   },
-  created() {
+  created () {
     ipcRenderer.on('open-file-response', (event, path) => {
       if (isExcelFile(path)) {
         this.initAfterImportFile({
-          path: path,
+          path,
           type: 'node'
         })
         this.setUploadFiles(path)
@@ -72,13 +81,13 @@ export default {
     }
   },
   computed: {
-    hasFile() {
+    hasFile () {
       return this.curOriRowCount > 0
     },
-    filterAcount() {
-      let activeSheetName = this.activeSheetName
-      let curUniqueCols = this.uniqueCols[activeSheetName] || []
-      let curUniqueLength = curUniqueCols.length
+    filterAcount () {
+      const activeSheetName = this.activeSheetName
+      const curUniqueCols = this.uniqueCols[activeSheetName] || []
+      const curUniqueLength = curUniqueCols.length
       return curUniqueLength > 0
         ? this.curFilterTagListCount + 1
         : this.curFilterTagListCount
@@ -98,15 +107,16 @@ export default {
   },
   methods: {
     openExternal,
-    toggleView() {
-      let curRouteName = this.$route.name
-      if (curRouteName === 'instructions')
+    toggleView () {
+      const curRouteName = this.$route.name
+      if (curRouteName === 'instructions') {
         this.$router.push('index')
-      else
+      } else {
         this.$router.push('instructions')
+      }
     },
-    focusSearchInput() {
-      let searchInput = document.getElementById('search_file_input')
+    focusSearchInput () {
+      const searchInput = document.getElementById('search_file_input')
       this.toggleSideBar()
       if (this.isShowSideBar) {
         this.$nextTick(() => {
@@ -114,15 +124,15 @@ export default {
         })
       }
     },
-    handleFile(e) {
+    handleFile (e) {
       ipcRenderer.send('sync-openFile-dialog')
     },
-    checkForUpdate() {
+    checkForUpdate () {
       this.checkUpdate(true)
       this.setKeepVersionStatus(false)
     },
-    checkUpdate(isClick) {
-      let that = this
+    checkUpdate (isClick) {
+      const that = this
       console.log(appInfo.updateUrl)
       request({
         url: appInfo.updateUrl,
@@ -132,15 +142,15 @@ export default {
           console.log(err)
         }
         try {
-          let statusCode = response.statusCode
+          const statusCode = response.statusCode
           if (statusCode === 200) {
-            let res = JSON.parse(response.body)
+            const res = JSON.parse(response.body)
             /**
             *  1即小于，表示当前版本比服务器上的版本还要新
             *  0即等于，表示已是最新版
             *  -1即大于，表示有更新版本
             */
-            let compareResult = compareVersions(appInfo.app_version, res.name)
+            const compareResult = compareVersions(appInfo.app_version, res.name)
             console.log('compareResult', compareResult)
             console.log('appInfo.app_version', appInfo.app_version)
             console.log('res.name', res.name)
@@ -148,7 +158,7 @@ export default {
               // 由于 github 对于国内用户下载速度太慢，所以要切换至国内
               let downloadUrl = getDownloadUrl(res.name)
               console.log(downloadUrl)
-              if (downloadUrl === undefined) {
+              if (typeof downloadUrl === 'undefined') {
                 downloadUrl = res.url
               }
               that.toggleUpdateDialog(true)
@@ -171,7 +181,7 @@ export default {
         }
       })
     },
-    clickFilterBtn() {
+    clickFilterBtn () {
       this.toggleFilterPanelStatus()
     },
     ...mapActions([

@@ -56,14 +56,14 @@ const moment = require('moment')
 moment.locale('zh')
 
 export default {
-  data() {
+  data () {
     return {}
   },
   computed: {
-    updateNotesHTML() {
+    updateNotesHTML () {
       return markdown.toHTML(this.updateNotes) || '空'
     },
-    formatPubDate() {
+    formatPubDate () {
       return (moment(this.updatePubDate)
         .subtract(8, 'hours')
         .format('YYYY年MM月DD日 HH时mm分'))
@@ -79,16 +79,16 @@ export default {
   },
   methods: {
     openExternal,
-    closeDialog() {
+    closeDialog () {
       this.toggleUpdateDialog(false)
     },
-    updateBtnHandler() {
+    updateBtnHandler () {
       ipcRenderer.send('will-download-handler', {
         url: this.updateUrl
       })
       this.toggleUpdateDialog(false)
     },
-    keepCurVersion() {
+    keepCurVersion () {
       this.toggleUpdateDialog(false)
       this.setKeepVersionStatus(true)
     },

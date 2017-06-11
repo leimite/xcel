@@ -180,7 +180,6 @@
   </div>
 </template>
 
-
 <script>
 import { openExternal } from '../../utils/openExternal'
 export default {

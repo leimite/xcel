@@ -1,17 +1,14 @@
 import * as types from '../mutation-types'
-import {
-  getLocal,
-  setLocal
-} from '../../utils/localStorageSet'
+import { getLocal, setLocal } from '../../utils/localStorageSet'
 import _ from 'lodash'
 
-let isKeepCurVersion = (function initIsKeepVersion() {
+const isKeepCurVersion = (function initIsKeepVersion () {
   let isKeepCurVersionTemp = getLocal('isKeepCurVersion')
   if (!_.isBoolean(isKeepCurVersionTemp)) {
     isKeepCurVersionTemp = false
   }
   return isKeepCurVersionTemp
-})();
+})()
 
 const state = {
   url: '',
@@ -19,7 +16,7 @@ const state = {
   log: '',
   pubDate: '',
   isShowUpdateDialog: false,
-  isKeepCurVersion: isKeepCurVersion,
+  isKeepCurVersion,
   isHasNewVersion: false
 }
 
@@ -34,81 +31,54 @@ const getters = {
 }
 
 const actions = {
-  toggleUpdateDialog({
-    state,
-    commit,
-    rootState
-  }, isShowUpdateDialog) {
+  toggleUpdateDialog ({ state, commit, rootState }, isShowUpdateDialog) {
     commit(types.TOGGLE_UPDATE_DIALOG, isShowUpdateDialog)
   },
-  setUpdateUrl({
-    state,
-    commit,
-    rootState
-  }, url) {
+  setUpdateUrl ({ state, commit, rootState }, url) {
     commit(types.SET_UPDATE_URL, url)
   },
-  setUpdateVersion({
-    state,
-    commit,
-    rootState
-  }, version) {
+  setUpdateVersion ({ state, commit, rootState }, version) {
     commit(types.SET_UPDATE_VERSION, version)
   },
-  setUpdateLog({
-    state,
-    commit,
-    rootState
-  }, notes) {
+  setUpdateLog ({ state, commit, rootState }, notes) {
     commit(types.SET_UPDATE_LOG, notes)
   },
-  setUpdatePubDate({
-    state,
-    commit,
-    rootState
-  }, pubDate) {
+  setUpdatePubDate ({ state, commit, rootState }, pubDate) {
     commit(types.SET_UPDATE_PUB_DATE, pubDate)
   },
-  setKeepVersionStatus({
-    state,
-    commit,
-    rootState
-  }, isKeepCurVersion) {
+  setKeepVersionStatus ({ state, commit, rootState }, isKeepCurVersion) {
     commit(types.SET_KEEP_VERSION_STATUS, isKeepCurVersion)
   },
-  setHasNewStatus({
-    state,
-    commit,
-    rootState
-  }, isHasNewVersion) {
+  setHasNewStatus ({ state, commit, rootState }, isHasNewVersion) {
     commit(types.SET_HAS_NEW_VERSION, isHasNewVersion)
   }
 }
 
 const mutations = {
-  [types.TOGGLE_UPDATE_DIALOG](state, isShowUpdateDialog) {
-    if (_.isBoolean(isShowUpdateDialog))
+  [types.TOGGLE_UPDATE_DIALOG] (state, isShowUpdateDialog) {
+    if (_.isBoolean(isShowUpdateDialog)) {
       state.isShowUpdateDialog = isShowUpdateDialog
-    else
+    } else {
       state.isShowUpdateDialog = !state.isShowUpdateDialog
+    }
   },
-  [types.SET_UPDATE_URL](state, url) {
+  [types.SET_UPDATE_URL] (state, url) {
     state.url = url
   },
-  [types.SET_UPDATE_VERSION](state, version) {
+  [types.SET_UPDATE_VERSION] (state, version) {
     state.version = version
   },
-  [types.SET_UPDATE_LOG](state, log) {
+  [types.SET_UPDATE_LOG] (state, log) {
     state.log = log
   },
-  [types.SET_UPDATE_PUB_DATE](state, pubDate) {
+  [types.SET_UPDATE_PUB_DATE] (state, pubDate) {
     state.pubDate = pubDate
   },
-  [types.SET_KEEP_VERSION_STATUS](state, isKeepCurVersion) {
+  [types.SET_KEEP_VERSION_STATUS] (state, isKeepCurVersion) {
     state.isKeepCurVersion = isKeepCurVersion
     setLocal('isKeepCurVersion', state.isKeepCurVersion)
   },
-  [types.SET_HAS_NEW_VERSION](state, isHasNewVersion) {
+  [types.SET_HAS_NEW_VERSION] (state, isHasNewVersion) {
     state.isHasNewVersion = isHasNewVersion
   }
 }

@@ -14,13 +14,13 @@ import { mapActions } from 'vuex'
 
 export default {
   methods: {
-    minimizeHandler() {
+    minimizeHandler () {
       this.toggleWindowMin()
     },
-    maximizeHandler() {
+    maximizeHandler () {
       this.toggleWindowMax()
     },
-    closeHandler() {
+    closeHandler () {
       ipcRenderer.send('sync-close')
     },
     ...mapActions([

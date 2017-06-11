@@ -14,7 +14,7 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
-  data() {
+  data () {
     return {
       loadingText: [
         '文件正在导入中',

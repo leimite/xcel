@@ -1,18 +1,19 @@
 <template>
-  <div class="sheet_of_excel" :class="{'isShowSideBar': !sideBarStatus}">
-    <table class="table is_bordered">
-      <thead>
-        <tr>
-          <th></th>
-          <!-- v-for 整数迭代是从1开始 -->
-          <th v-for="col in curColCount" :title="'即第' + col + '行'">
-            {{ getCharCol(col - 1) }}
-          </th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
+	<div class="sheet_of_excel"
+		:class="{'isShowSideBar': !sideBarStatus}">
+		<table class="table is_bordered">
+			<thead>
+				<tr>
+					<th></th>
+					<!-- v-for 整数迭代是从1开始 -->
+					<th v-for="col in curColCount" :title="'即第' + col + '行'">
+						{{ getCharCol(col - 1) }}
+					</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
 </template>
 
 <script>
@@ -33,14 +34,14 @@ export default {
       curColCount: 'getCurColCount'
     })
   },
-  mounted() {
-    let tbody = this.$el.querySelector('tbody')
+  mounted () {
+    const tbody = this.$el.querySelector('tbody')
     tbody && (tbody.innerHTML = this.sheetHTML)
     console.log('curColCount', this.curColCount)
   },
   watch: {
-    sheetHTML() {
-      let tbody = this.$el.querySelector('tbody')
+    sheetHTML () {
+      const tbody = this.$el.querySelector('tbody')
       tbody && (tbody.innerHTML = this.sheetHTML)
     }
   },

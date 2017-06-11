@@ -1,20 +1,21 @@
 <template>
-  <span class="select">
-    <select v-model="childGroupId">
-      <option value="-1">组别</option>
-      <!-- v-for 整数迭代是从1开始 -->
-      <option v-for="index in groupNum" :value="index - 1">
-        {{ getGroupValue(index - 1) }}
-      </option>
-    </select>
-    <p class="val_mask">{{ getGroupName(childGroupId) }}</p>
-  </span>
+	<span class="select">
+		<select v-model="childGroupId" >
+			<option value="-1">组别</option>
+			<!-- v-for 整数迭代是从1开始 -->
+			<option
+				v-for="index in groupNum" :value="index - 1">
+				{{ getGroupValue(index - 1) }}
+			</option>
+		</select>
+		<p class="val_mask">{{ getGroupName(childGroupId) }}</p>
+	</span>
 </template>
 
 <script>
-import { getCharCol } from "../../utils/ExcelSet"
+import { getCharCol } from '../../utils/ExcelSet'
 export default {
-  data() {
+  data () {
     return {
       groupNum: 5,
       childGroupId: this.groupId
@@ -28,20 +29,20 @@ export default {
     }
   },
   watch: {
-    groupId() {
+    groupId () {
       this.childGroupId = this.groupId
     },
-    childGroupId() {
+    childGroupId () {
       this.$emit('changeSelect', this.childGroupId)
     }
   },
   methods: {
     getCharCol,
-    getGroupValue(index) {
+    getGroupValue (index) {
       return this.getCharCol(index)
     },
-    getGroupName(groupId) {
-      return groupId == '-1' ? '组别' : this.getCharCol(groupId)
+    getGroupName (groupId) {
+      return groupId.toString() === '-1' ? '组别' : this.getCharCol(groupId)
     }
   }
 }

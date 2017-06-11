@@ -21,9 +21,8 @@
 </template>
 
 <script>
-
 import { mapGetters, mapActions } from 'vuex'
-import { getCharCol } from "../../utils/ExcelSet"
+import { getCharCol } from '../../utils/ExcelSet'
 
 export default {
   props: {
@@ -44,9 +43,9 @@ export default {
   },
   methods: {
     getCharCol,
-    delHandler(index) {
-      let activeSheetName = this.activeSheetName,
-        curUniqueCols = this.uniqueCols[activeSheetName]
+    delHandler (index) {
+      const activeSheetName = this.activeSheetName
+      const curUniqueCols = this.uniqueCols[activeSheetName]
 
       this.delFilter({
         index,
@@ -55,14 +54,8 @@ export default {
 
       this.checkFilterAndUnqiueCount()
     },
-    getLogicOperator(char) {
+    getLogicOperator (char) {
       return char === 'and' ? '且' : '或'
-    },
-    getFilterWords(filterTag) {
-      let finalWords = ''
-      filterTag.filters.forEach((item, index) => {
-        finalWords
-      })
     },
     ...mapActions([
       'delFilter',

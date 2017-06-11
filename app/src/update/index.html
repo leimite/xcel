@@ -27,36 +27,30 @@
     const ipcRenderer = electron.ipcRenderer
     const shell = electron.shell
 
-    let $ = document.querySelector.bind(document)
-    let downloadProgress = $('#download_progress'),
-      cur = $('#cur'),
-      total = $('#total'),
-      dprogressBar = $('.dprogress_bar'),
-      checkoutSourceBtn = $('.checkout_source_btn'),
-      pauseBtn = $('.pause_btn'),
-      cancelBtn = $('.cancel_btn'),
-      willDownloadResponse = function (event, {
-        curReceivedBytes,
-        totalBytes,
-        downloadStatus
-      }) {
-        let percentage = curReceivedBytes / totalBytes * 100 + '%'
+			let $ = document.querySelector.bind(document)
+			let downloadProgress = $('#download_progress'),
+						cur = $('#cur'),
+						total = $('#total'),
+						dprogressBar = $('.dprogress_bar'),
+						checkoutSourceBtn = $('.checkout_source_btn'),
+						pauseBtn = $('.pause_btn'),
+						cancelBtn = $('.cancel_btn'),
+						willDownloadResponse = function(event, { curReceivedBytes, totalBytes, downloadStatus }) {
+							let percentage = curReceivedBytes / totalBytes * 100 + '%'
 
-        cur.innerText = (curReceivedBytes / 1024 / 1024).toFixed(2)
-        total.innerText = (totalBytes / 1024 / 1024).toFixed(2)
-        dprogressBar.style.width = percentage
-      },
-      cancelBtnHandler = function () {
-        ipcRenderer.send('update-cancel')
-      },
-      pauseBtnHandler = function () {
-        ipcRenderer.send('update-switch')
-      },
-      togglePauseBtn = function (event, {
-        text
-      }) {
-        pauseBtn.innerText = text
-      }
+							cur.innerText = (curReceivedBytes / 1024 / 1024).toFixed(2)
+							total.innerText = (totalBytes / 1024 / 1024).toFixed(2)
+							dprogressBar.style.width = percentage
+						},
+						cancelBtnHandler = function() {
+							ipcRenderer.send('update-cancel')
+						},
+						pauseBtnHandler = function() {
+							ipcRenderer.send('update-switch')
+						},
+						togglePauseBtn = function(event, { text }) {
+							pauseBtn.innerText = text
+						}
 
     ipcRenderer.on('will-download-response', willDownloadResponse)
     ipcRenderer.on('update-switch-response', togglePauseBtn)

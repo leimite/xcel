@@ -1,61 +1,59 @@
 <template>
-  <form class="unique_form" @submit.prevent="addUniqueHandler" @keyup.stop>
-    <table class="table">
-      <tbody>
-        <tr>
-          <td>多列去重逻辑</td>
-          <td>
-            <span class="select disabled">
-              <select v-model="logicOperator" disabled>
-                <option value="and">且</option>
-              </select>
-              <p class="val_mask">{{ getLogicOperatorWords(logicOperator)}}</p>
-            </span>
-          </td>
-          <td>
-            <p class="col_placeholder" @click="showColSelectDialog">
-              {{operatorCol.length === 0 ? "请选择列" : formatColGroup}}
-            </p>
-          </td>
+    <form class="unique_form" @submit.prevent="addUniqueHandler" @keyup.stop>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td>多列去重逻辑</td>
+                    <td>
+						<span class="select disabled">
+							<select v-model="logicOperator" disabled>
+								<option value="and">且</option>
+							</select>
+							<p class="val_mask">{{ getLogicOperatorWords(logicOperator)}}</p>
+						</span>
+					</td>
+                    <td>
+                        <p class="col_placeholder" @click="showColSelectDialog">
+                            {{operatorCol.length === 0 ? "请选择列" : formatColGroup}}
+                        </p>
+                    </td>
 
-          <td>
-            <button type="submit">添加</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </form>
+                    <td>
+                        <button type="submit">添加</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import {
   getCharCol,
-  getLogicOperatorWords,
-  getOperatorWords,
-  getFilterWordsPrimitive
+  getLogicOperatorWords
 } from '../../utils/ExcelSet'
 import { ipcRenderer } from 'electron'
 
 export default {
-  data() {
+  data () {
     return {
       operatorCol: [],
       logicOperator: 'and'
     }
   },
-  mounted() {
-    window.eventBus.$on('colSelVal4Remove', (colSelectGroup) => {
+  mounted () {
+    window.eventBus.$on('colSelVal4Remove', colSelectGroup => {
       console.log('收到')
       this.operatorCol = colSelectGroup
     })
   },
   computed: {
-    formatColGroup() {
+    formatColGroup () {
       console.log(this.operatorCol)
-      return this.operatorCol.map((col, index) => {
-        return this.getCharCol(col)
-      }).join(',')
+      return this.operatorCol.map((col, index) =>
+        this.getCharCol(col)
+      ).join(',')
     },
     ...mapGetters({
       curColCount: 'getCurColCount',
@@ -67,22 +65,21 @@ export default {
   methods: {
     getCharCol,
     getLogicOperatorWords,
-    showColSelectDialog() {
+    showColSelectDialog () {
       this.setColSelectType(3)
       this.setColSelectDialogStatus(true)
     },
-    addUniqueHandler() {
+    addUniqueHandler () {
       if (!this.validateForm()) {
         return
       }
-      let uniqueCols = this.operatorCol.map((col, index) => {
-        return col - 1
-      })
+      const uniqueCols = this.operatorCol.map((col, index) =>
+        col - 1
+      )
       this.setUniqueCols(uniqueCols)
       this.operatorCol = []
     },
-    validateForm() {
-
+    validateForm () {
       if (this.uniqueCols.length > 0) {
         ipcRenderer.send('sync-alert-dialog', {
           content: '筛选条件已存在去重逻辑。若需替换，请先删除原有去重逻辑。'
@@ -91,12 +88,11 @@ export default {
       }
 
       if (this.operatorCol.length > 0) return true
-      else {
-        ipcRenderer.send('sync-alert-dialog', {
-          content: '多列去重逻辑：至少填写一列'
-        })
-        return false
-      }
+
+      ipcRenderer.send('sync-alert-dialog', {
+        content: '多列去重逻辑：至少填写一列'
+      })
+      return false
     },
     ...mapActions([
       'setColSelectDialogStatus',

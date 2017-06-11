@@ -18,7 +18,6 @@
 </template>
 
 <script>
-
 import FilterTagList from './FilterTagList'
 import FilterFormSingleLogic from './FilterFormSingleLogic'
 import FilterFormMultiCalc from './FilterFormMultiCalc'
@@ -35,7 +34,7 @@ export default {
     FilterFormDoubleColsRange,
     FilterFormUnique
   },
-  data() {
+  data () {
     return {
       curCol: 1,
       filterVal: '',
@@ -44,7 +43,7 @@ export default {
       activeFilterFormIndex: 0
     }
   },
-  created() {
+  created () {
     ipcRenderer.on('filter-response', (event, { filRow }) => {
       this.setFileStatus(2)
       this.setFilteredData(filRow)
@@ -78,7 +77,7 @@ export default {
     })
   },
   methods: {
-    filterHandler() {
+    filterHandler () {
       if (this.sheetNameList.length === 0) {
         ipcRenderer.send('sync-alert-dialog', {
           content: '请先上传Excel文件'

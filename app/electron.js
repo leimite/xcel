@@ -1,19 +1,16 @@
 'use strict'
 
 const electron = require('electron')
-const crashTempate = require('./crashTempate')
-const ipcMainSets = require('./ipcMainSets')
-const menuTemplate = require('./menuTemplate')
 const path = require('path')
-
+const menuTemplate = require('./menuTemplate')
+const ipcMainSets = require('./ipcMainSets')
+const crashTempate = require('./crashTempate')
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 const Menu = electron.Menu
 
 let mainWindow // 主窗口
 let backgroundWindow // 执行耗时运算的 背后窗口
-let updateWindow // 更新的下载窗口
-var windowBounds = {} // 主窗口的尺寸信息
 let config = {}
 
 if (process.env.NODE_ENV === 'development') {
@@ -26,36 +23,34 @@ if (process.env.NODE_ENV === 'development') {
 config.backUrl = `file://${__dirname}/dist/background/index.html`
 config.isDev = process.env.NODE_ENV === 'development'
 
-
-function createMainWindow() {
-  var win = new BrowserWindow({
+function createMainWindow () {
+  const win = new BrowserWindow({
     height: 850,
     width: 1280,
     minWidth: 1120,
     minHeight: 768,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: '#f5f5f5',
     fullscreenable: false,
     frame: false,
     show: false
   })
-  windowBounds = win.getBounds()
   win.loadURL(config.mainUrl)
 
   if (config.isDev) {
     BrowserWindow.addDevToolsExtension(path.join(__dirname, '../node_modules/devtron'))
 
-    let installExtension = require('electron-devtools-installer')
+    const installExtension = require('electron-devtools-installer')
 
     installExtension.default(installExtension.VUEJS_DEVTOOLS)
-      .then((name) => win.webContents.openDevTools())
-      .catch((err) => console.log('An error occurred: ', err))
+            .then(name => win.webContents.openDevTools())
+            .catch(err => console.log('An error occurred: ', err))
   }
 
   win.on('closed', () => {
-    console.log("触发 closed")
+    console.log('触发 closed')
     mainWindow = null
     backgroundWindow = null
-    // 在Mac中完全退出程序，而不会留在dock中
+        // 在Mac中完全退出程序，而不会留在dock中
     app.quit()
   })
 
@@ -67,26 +62,23 @@ function createMainWindow() {
   return win
 }
 
-function createBackgroundWindow() {
-  var win = new BrowserWindow({
+function createBackgroundWindow () {
+  const win = new BrowserWindow({
     show: config.isDev
   })
   win.loadURL(config.backUrl)
-  console.log("backgroundWindow opened")
+  console.log('backgroundWindow opened')
   return win
 }
 
-
 app.on('ready', () => {
-  console.log("ready")
+  console.log('ready')
   mainWindow = createMainWindow()
   backgroundWindow = createBackgroundWindow()
   ipcMainSets(mainWindow, backgroundWindow)
   const menu = Menu.buildFromTemplate(menuTemplate)
   Menu.setApplicationMenu(menu)
 })
-
-
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -105,4 +97,4 @@ app.on('activate', () => {
 
 crashTempate.start()
 
-console.log("主进程pid：", process.pid)
+console.log('主进程pid：', process.pid)
