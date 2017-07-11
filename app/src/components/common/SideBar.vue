@@ -1,28 +1,20 @@
 <template>
-	<transition name="slide-fade">
-		<div id="sidebar" v-show="getSideBarStatus">
-			<div class="sidebar_header">
-				<img src="../assets/xcel_logo.png"
-					class="logo"
-					title="XCEL官网"
-					@click="openExternal('xcel')">
-				<p>Ultimate EXCEL Filter</p>
-				<a class="hide_sidebar_btn"
-					title="关闭侧边栏"
-					@click="toggleSideBar(false)">
-				</a>
-			</div>
-			<div>
-				<file-list></file-list>
-			</div>
-			<div class="search_form">
-				<input type="text"
-					id="search_file_input"
-					placeholder="请输入搜索关键字"
-					v-model="vuexSearchVal">
-			</div>
-		</div>
-	</transition>
+  <transition name="slide-fade">
+    <div id="sidebar" v-show="getSideBarStatus">
+      <div class="sidebar_header">
+        <img src="../assets/xcel_logo.png" class="logo" title="XCEL官网" @click="openExternal('xcel')">
+        <p>Ultimate EXCEL Filter</p>
+        <a class="hide_sidebar_btn" title="关闭侧边栏" @click="toggleSideBar(false)">
+        </a>
+      </div>
+      <div>
+        <file-list></file-list>
+      </div>
+      <div class="search_form">
+        <input type="text" id="search_file_input" placeholder="请输入搜索关键字" v-model="vuexSearchVal">
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -36,10 +28,10 @@ export default {
   },
   computed: {
     vuexSearchVal: {
-      get () {
+      get() {
         return this.getSearchVal
       },
-      set (val) {
+      set(val) {
         this.setSearchVal(val)
       }
     },

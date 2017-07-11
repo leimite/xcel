@@ -13,6 +13,9 @@ let oriRow = {}
 let filRow = {}
 
 window.addEventListener('load', event => {
+  console.log('11111111111111')
+  console.log(event);
+  console.log('11111111111111')
   ipcRenderer.on('readFile-start', (event, { data, activeSheetIndex }) => {
         /* excelData 的数据结构
         {
@@ -55,6 +58,9 @@ window.addEventListener('load', event => {
   })
   ipcRenderer.on('filter-start', (event, { activeSheetName, filterTagList, filterWay, uniqueCols }) => {
     filteredData = filterHandler({ filterTagList, filterWay, uniqueCols })
+    console.log(111111111111);
+    console.log(filteredData);
+    console.log(111111111111);
     const curColKeys = colKeys[activeSheetName]
     const tempFilRow = {}
 

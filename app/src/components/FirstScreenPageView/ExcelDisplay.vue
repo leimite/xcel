@@ -1,37 +1,25 @@
 <!-- Excel -->
 <template>
-	<div class="excel_area">
-		<div class="tabs is_boxed is_small excel_cheet_nav"
-			v-show="sheetNameList.length !== 0">
-			<ul>
-				<li v-for = "(sheetName, index) in sheetNameList"
-          :key="index"
-					:class="{'is_active': index == activeSheet.index}"
-					@click = "changeTab(index)">
-					<a href="javascript:;">
-						<span>{{ sheetName }}</span>
-					</a>
-				</li>
-			</ul>
-		</div>
-		<div class="tabs_body">
-			<div class="drop_area content"
-				v-show="sheetNameList.length < 1"
-				@drop.prevent.stop="dropHandler"
-				@dragenter="dragenterHandler"
-				@dragleave="dragleaveHandler"
-				>
-				<p class = "drop_tips">
-					<img src="../assets/svg/excel_display_warm.svg" alt="[警告]">当前没有选中任何Excel文件，可将文件拖拽至此区域。
-				</p>
-			</div>
-			<sheet-of-excel v-for="(sheetName, index) in sheetNameList"
-        :key="index"
-				v-show="activeSheet.index === index"
-				:sheetHTML="sheetHTML">
-			</sheet-of-excel>
-		</div>
-	</div>
+  <div class="excel_area">
+    <div class="tabs is_boxed is_small excel_cheet_nav" v-show="sheetNameList.length !== 0">
+      <ul>
+        <li v-for="(sheetName, index) in sheetNameList" :key="index" :class="{'is_active': index == activeSheet.index}" @click="changeTab(index)">
+          <a href="javascript:;">
+            <span>{{ sheetName }}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="tabs_body">
+      <div class="drop_area content" v-show="sheetNameList.length < 1" @drop.prevent.stop="dropHandler" @dragenter="dragenterHandler" @dragleave="dragleaveHandler">
+        <p class="drop_tips">
+          <img src="../assets/svg/excel_display_warm.svg" alt="[警告]">当前没有选中任何Excel文件，可将文件拖拽至此区域。
+        </p>
+      </div>
+      <sheet-of-excel v-for="(sheetName, index) in sheetNameList" :key="index" v-show="activeSheet.index === index" :sheetHTML="sheetHTML">
+      </sheet-of-excel>
+    </div>
+  </div>
 </template>
 
 
@@ -45,12 +33,12 @@ export default {
   components: {
     SheetOfExcel
   },
-  data () {
+  data() {
     return {
       sheetHTML: ''
     }
   },
-  mounted () {
+  mounted() {
     ipcRenderer.on('generate-htmlstring-response', (event, { sheetHTML }) => {
       this.sheetHTML = sheetHTML
     })
@@ -60,7 +48,7 @@ export default {
       dropArea.addEventListener('dragenter', dragoverHandler, false)
       dropArea.addEventListener('dragover', dragoverHandler, false)
     }
-    function dragoverHandler (e) {
+    function dragoverHandler(e) {
       e.stopPropagation()
       e.preventDefault()
       e.dataTransfer.dropEffect = 'copy'
@@ -76,7 +64,7 @@ export default {
     })
   },
   methods: {
-    changeTab (index) {
+    changeTab(index) {
       this.setActiveSheet(index)
       ipcRenderer.send('changeTab-start', {
         filterTagList: this.filterTagList,
@@ -85,13 +73,13 @@ export default {
         uniqueCols: this.uniqueCols
       })
     },
-    dragenterHandler (e) {
+    dragenterHandler(e) {
       e.target.classList.add('active')
     },
-    dragleaveHandler (e) {
+    dragleaveHandler(e) {
       e.target.classList.remove('active')
     },
-    dropHandler (e) {
+    dropHandler(e) {
       const files = e.dataTransfer.files
       const path = files[0].path
 

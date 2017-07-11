@@ -24,7 +24,7 @@ export default {
     }
   },
   computed: {
-    uniqueWords () {
+    uniqueWords() {
       let finalWords = '第'
       this.uniqueCols.forEach((item, index) => {
         if (index === this.uniqueCols.length - 1) {
@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     getCharCol,
-    delHandler () {
+    delHandler() {
       this.setUniqueCols([])
       this.checkFilterAndUnqiueCount()
     },

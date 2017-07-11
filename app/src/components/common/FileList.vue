@@ -1,18 +1,15 @@
 <template>
-	<nav class="file_list_container">
-		<div class="file_list">
-			<ul>
-				<li title="双击文件名即可导入"
-					v-for="(file, index) in fileListByQuery"
-					:class="{cur_file: file.path === fileList[0].path}"
-					@dblclick="confirmRead(file.path ,file)">
-					<span>{{ file.extname.replace(/^./, "") }}</span>
-					<p>{{ file.name }}</p>
-					<button class="btn del_btn" @click="confirmDel(file)">删除</button>
-				</li>
-			</ul>
-		</div>
-	</nav>
+  <nav class="file_list_container">
+    <div class="file_list">
+      <ul>
+        <li title="双击文件名即可导入" v-for="(file, index) in fileListByQuery" :key="index" :class="{cur_file: file.path === fileList[0].path}" @dblclick="confirmRead(file.path ,file)">
+          <span>{{ file.extname.replace(/^./, "") }}</span>
+          <p>{{ file.name }}</p>
+          <button class="btn del_btn" @click="confirmDel(file)">删除</button>
+        </li>
+      </ul>
+    </div>
+  </nav>
 </template>
 
 <script>
@@ -22,14 +19,14 @@ import { remote, ipcRenderer } from 'electron'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  data () {
+  data() {
     return {
       filterFileList: [],
       curLoadingIndex: -1
     }
   },
   computed: {
-    fileListByQuery () {
+    fileListByQuery() {
       return this.filterByQuery(this.fileList, this.searchVal)
     },
     ...mapGetters({
@@ -38,7 +35,7 @@ export default {
     })
   },
   methods: {
-    filterByQuery (fileList, query) {
+    filterByQuery(fileList, query) {
       if (query.trim().length === 0) return fileList
       const filterRegExp = new RegExp(query, 'gi')
       return fileList.filter((file, index) => {
@@ -46,7 +43,7 @@ export default {
         return false
       })
     },
-    filterByType (fileList, type) {
+    filterByType(fileList, type) {
       if (type.toUpperCase() === 'ALL') return fileList
       const filterRegExp = new RegExp((`${type}$`), 'gi')
       return fileList.filter(function (file, index) {
@@ -54,7 +51,7 @@ export default {
         return false
       })
     },
-    confirmRead (path, file) {
+    confirmRead(path, file) {
       if (!isExcelFile(path)) {
         ipcRenderer.send('sync-alert-dialog', {
           content: '不支持该文件格式'
@@ -85,7 +82,7 @@ export default {
         })
       }
     },
-    confirmDel (file, content) {
+    confirmDel(file, content) {
       remote.dialog.showMessageBox({
         type: 'question',
         buttons: ['确定', '取消'],

@@ -1,6 +1,8 @@
 // 由于 Electron 的 main 和 renderer 进程的限制，目前该模块仅用于 renderer 进程。
 
-import { remote } from 'electron'
+import {
+  remote
+} from 'electron'
 import os from 'os'
 import packageJSON from '../../package.json'
 
@@ -17,8 +19,8 @@ const name = isDev ? packageJSON.name : app.getName()
 const platform = os.platform()
 const arch = os.arch()
 const updateUrl = isDev ?
-                   `${UPDATE_HOST_DEV}update/${platform}_${arch}/${appVersion}` :
-                   `${UPDATE_HOST}update/${platform}_${arch}/${appVersion}`
+  `${UPDATE_HOST_DEV}update/${platform}_${arch}/${appVersion}` :
+  `${UPDATE_HOST}update/${platform}_${arch}/${appVersion}`
 
 export const appInfo = {
   platform,
@@ -31,7 +33,7 @@ export const appInfo = {
   downloadUrl: DOWNLOAD_HOST
 }
 
-export function getDownloadUrl (version) {
+export function getDownloadUrl(version) {
   const prefix = `${DOWNLOAD_HOST}${version}/`
   if (platform === 'darwin') {
     return `${prefix}${name}-${version}.dmg`

@@ -1,4 +1,4 @@
-export function getLocal (key) {
+export function getLocal(key) {
   const localStorage = window.localStorage
   let valStr
 
@@ -20,7 +20,7 @@ export function getLocal (key) {
   }
 }
 
-export function setLocal (key, val) {
+export function setLocal(key, val) {
   const localStorage = window.localStorage
 
   if (typeof key !== 'undefined' && key !== null) {

@@ -7,7 +7,7 @@
       {{ getCharCol(filterTag.groupId) }}
     </span>
     <ul>
-      <li v-for="(filter, index) in filterTag.filters">
+      <li v-for="(filter, index) in filterTag.filters" :key="index" >
         <span class="logic_char" v-if="index !== 0">
           {{ getLogicOperator(filter.logicOperator) }}
         </span>
@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     getCharCol,
-    delHandler (index) {
+    delHandler(index) {
       const activeSheetName = this.activeSheetName
       const curUniqueCols = this.uniqueCols[activeSheetName]
 
@@ -54,7 +54,7 @@ export default {
 
       this.checkFilterAndUnqiueCount()
     },
-    getLogicOperator (char) {
+    getLogicOperator(char) {
       return char === 'and' ? '且' : '或'
     },
     ...mapActions([

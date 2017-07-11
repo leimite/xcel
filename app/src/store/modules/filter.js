@@ -8,7 +8,7 @@ if (!filterWay) filterWay = 0
 
 const state = {
   filterTagList: {},
-  filterWay, // 0 保留、1 剔除
+  filterWay, // 0 保留、1 剔除 0 表格、1 图表
   isShowFilterPanel: false,
   isShowColSelectDialog: false,
   colSelecType: -1, // 0 单列、1 多列、2 双列范围、3 去重

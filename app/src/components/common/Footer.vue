@@ -1,47 +1,44 @@
 <template>
-	<footer class="footer">
-		<ul class="btn_group">
-			<li class="btn search_btn" title="搜索文件"
-				v-show="!isShowInstruction"
-				@click="focusSearchInput"
-				:class="{active: isShowSideBar}">
-				<i class="fa fa-search"></i>
-			</li>
-			<li class="btn upload_btn" title="上传文件"
-				 v-show="!isShowInstruction"
-				 @click="handleFile">
-				<i class="fa fa-upload"></i>
-			</li>
-			<li class="btn filter_btn" title="添加筛选条件"
-				v-show="!isShowInstruction"
-				@click="clickFilterBtn"
-				:class="{active: isShowFilterPanel}">
-				<i class="fa fa-filter"></i>
-			</li>
-			<li class="btn instruction_btn" title="使用说明"
-				:class="{'active': isShowInstruction}"
-				@click="toggleView">
-				<i class="fa fa-info"></i>
-			</li>
-			<li class="btn update_btn" title="检查更新"
-				@click="checkForUpdate"
-				:class="{active: isShowUpdateDialog}">
-				<i class="fa fa-cloud-download"></i>
-			</li>
-		</ul>
-		<div>
-			<p class="summary_info" v-show="hasFile">
-				筛选后数据为
-				<em>{{ Math.min(curFilRowCount, curOriRowCount) }}</em>
-				行，原始记录为
-				<em>{{ curOriRowCount }}</em>
-				行，共
-				<em>{{ filterAcount }}</em>
-				个{{ filterWay == 0 ? "保留" : "剔除"}}条件
-			</p>
-			<img src="../assets/O2-icon.png" alt="O2_logo" title="凹凸实验室" @click="openExternal('aotu')">
-		</div>
-	</footer>
+  <footer class="footer">
+    <ul class="btn_group">
+      <li class="btn search_btn" title="搜索文件" v-show="!isShowInstruction" @click="focusSearchInput" :class="{active: isShowSideBar}">
+        <i class="fa fa-search"></i>
+      </li>
+      <li class="btn upload_btn" title="上传文件" v-show="!isShowInstruction" @click="handleFile">
+        <i class="fa fa-upload"></i>
+      </li>
+      <li class="btn filter_btn" title="添加筛选条件" v-show="!isShowInstruction" @click="clickFilterBtn" :class="{active: isShowFilterPanel}">
+        <i class="fa fa-filter"></i>
+      </li>
+      <li class="btn instruction_btn" title="使用说明" :class="{'active': isShowInstruction}" @click="toggleView">
+        <i class="fa fa-info"></i>
+      </li>
+      <li class="btn update_btn" title="检查更新" @click="checkForUpdate" :class="{active: isShowUpdateDialog}">
+        <i class="fa fa-cloud-download"></i>
+      </li>
+    </ul>
+    <div>
+      <!--<p class="summary_info" v-show="hasFile">
+  				筛选后数据为
+  				<em>{{ Math.min(curFilRowCount, curOriRowCount) }}</em>
+  				行，原始记录为
+  				<em>{{ curOriRowCount }}</em>
+  				行，共
+  				<em>{{ filterAcount }}</em>
+  				个{{ filterWay == 0 ? "保留" : "剔除"}}条件
+  			</p>-->
+      <p class="summary_info" v-show="hasFile">
+        筛选后数据为
+        <em>{{ Math.min(curFilRowCount, curOriRowCount) }}</em>
+        行，原始记录为
+        <em>{{ curOriRowCount }}</em>
+        行，共
+        <em>{{ filterAcount }}</em>
+        个{{ filterWay == 0 ? "保留" : "剔除"}}条件
+      </p>
+      <img src="../assets/O2-icon.png" alt="O2_logo" title="凹凸实验室" @click="openExternal('aotu')">
+    </div>
+  </footer>
 </template>
 
 <script>
@@ -56,13 +53,14 @@ import { mapGetters, mapActions } from 'vuex'
 let firstTime = true
 
 export default {
-  data () {
+  data() {
     return {
       isShowInstruction: this.$route.name === 'instructions'
     }
   },
-  created () {
+  created() {
     ipcRenderer.on('open-file-response', (event, path) => {
+      console.log(isExcelFile(path))
       if (isExcelFile(path)) {
         this.initAfterImportFile({
           path,
@@ -81,10 +79,10 @@ export default {
     }
   },
   computed: {
-    hasFile () {
+    hasFile() {
       return this.curOriRowCount > 0
     },
-    filterAcount () {
+    filterAcount() {
       const activeSheetName = this.activeSheetName
       const curUniqueCols = this.uniqueCols[activeSheetName] || []
       const curUniqueLength = curUniqueCols.length
@@ -107,7 +105,7 @@ export default {
   },
   methods: {
     openExternal,
-    toggleView () {
+    toggleView() {
       const curRouteName = this.$route.name
       if (curRouteName === 'instructions') {
         this.$router.push('index')
@@ -115,7 +113,7 @@ export default {
         this.$router.push('instructions')
       }
     },
-    focusSearchInput () {
+    focusSearchInput() {
       const searchInput = document.getElementById('search_file_input')
       this.toggleSideBar()
       if (this.isShowSideBar) {
@@ -124,14 +122,14 @@ export default {
         })
       }
     },
-    handleFile (e) {
+    handleFile(e) {
       ipcRenderer.send('sync-openFile-dialog')
     },
-    checkForUpdate () {
+    checkForUpdate() {
       this.checkUpdate(true)
       this.setKeepVersionStatus(false)
     },
-    checkUpdate (isClick) {
+    checkUpdate(isClick) {
       const that = this
       console.log(appInfo.updateUrl)
       request({
@@ -181,7 +179,7 @@ export default {
         }
       })
     },
-    clickFilterBtn () {
+    clickFilterBtn() {
       this.toggleFilterPanelStatus()
     },
     ...mapActions([

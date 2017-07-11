@@ -9,9 +9,9 @@
     <div class="filter_form_group">
       <div class="filter_form_group_inside">
         <filter-form-single-logic></filter-form-single-logic>
-        <filter-form-multi-calc></filter-form-multi-calc>
-        <filter-form-double-cols-range></filter-form-double-cols-range>
-        <filter-form-unique></filter-form-unique>
+        <!--<filter-form-multi-calc></filter-form-multi-calc>
+          <filter-form-double-cols-range></filter-form-double-cols-range>
+          <filter-form-unique></filter-form-unique>-->
       </div>
     </div>
   </div>
@@ -20,9 +20,9 @@
 <script>
 import FilterTagList from './FilterTagList'
 import FilterFormSingleLogic from './FilterFormSingleLogic'
-import FilterFormMultiCalc from './FilterFormMultiCalc'
-import FilterFormDoubleColsRange from './FilterFormDoubleColsRange'
-import FilterFormUnique from './FilterFormUnique'
+// import FilterFormMultiCalc from './FilterFormMultiCalc'
+// import FilterFormDoubleColsRange from './FilterFormDoubleColsRange'
+// import FilterFormUnique from './FilterFormUnique'
 import { mapGetters, mapActions } from 'vuex'
 import { ipcRenderer } from 'electron'
 
@@ -30,20 +30,20 @@ export default {
   components: {
     FilterTagList,
     FilterFormSingleLogic,
-    FilterFormMultiCalc,
-    FilterFormDoubleColsRange,
-    FilterFormUnique
+    // FilterFormMultiCalc,
+    // FilterFormDoubleColsRange,
+    // FilterFormUnique
   },
-  data () {
+  data() {
     return {
-      curCol: 1,
-      filterVal: '',
-      colOfSheet: 1,
-      filterFormNav: ['单列（组合）逻辑', '多列运算逻辑', '双列范围逻辑'],
-      activeFilterFormIndex: 0
+      // curCol: 1,
+      // filterVal: '',
+      // colOfSheet: 1,
+      // filterFormNav: ['单列（组合）逻辑', '多列运算逻辑', '双列范围逻辑'],
+      // activeFilterFormIndex: 0
     }
   },
-  created () {
+  created() {
     ipcRenderer.on('filter-response', (event, { filRow }) => {
       this.setFileStatus(2)
       this.setFilteredData(filRow)
@@ -77,7 +77,7 @@ export default {
     })
   },
   methods: {
-    filterHandler () {
+    filterHandler() {
       if (this.sheetNameList.length === 0) {
         ipcRenderer.send('sync-alert-dialog', {
           content: '请先上传Excel文件'

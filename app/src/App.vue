@@ -20,7 +20,7 @@ export default {
     windowTop,
     UpdateDialog
   },
-  mounted () {
+  mounted() {
     document.body.addEventListener('keyup', this.keyupHandler, false)
   },
   computed: {
@@ -31,7 +31,7 @@ export default {
     })
   },
   methods: {
-    keyupHandler (event) {
+    keyupHandler(event) {
       const keyCode = event.keyCode
       if (keyCode === 27) {
         if (this.isShowUpdateDialog) {
