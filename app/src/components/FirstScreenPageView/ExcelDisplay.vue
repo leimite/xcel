@@ -39,8 +39,21 @@ export default {
     }
   },
   mounted() {
-    ipcRenderer.on('generate-htmlstring-response', (event, { sheetHTML }) => {
+    ipcRenderer.on('readFile-response', (event, { oriRow,filRow,colKeys,filterTagList,sheetNameList }) => {
+      console.log(oriRow); // 原始行 object {表名:69}
+      console.log(filRow); // 过滤后行 object {表名:69}
+      console.log(colKeys); // 列字段 object {表名:[列字段1，列字段2,……]}
+      console.log(filterTagList); // 过滤的标签?
+      console.log(sheetNameList); // array [表名]
+    })
+
+    //
+    ipcRenderer.on('generate-htmlstring-response', (event, { sheetHTML}) => {
+      // console.log(sheetHTML);
       this.sheetHTML = sheetHTML
+    })
+    ipcRenderer.on('generate-json-response', (event, { sheetData,colKeys}) => {
+      console.log(colKeys);
     })
 
     const dropArea = document.querySelector('.drop_area')

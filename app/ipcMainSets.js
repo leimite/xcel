@@ -136,12 +136,16 @@ module.exports = function (mainWindow, backgroundWindow) {
   ipcMain.on('readFile-start', (event, arg) => {
     console.log('读取文件emit')
     savePath = getSavePath(arg.data.path)
-    console.log(savePath)
+    console.log('读取文件:'+savePath)
     backgroundWindow.webContents.send('readFile-start', arg)
   })
 
   ipcMain.on('generate-htmlstring-response', (event, arg) => {
     mainWindow.webContents.send('generate-htmlstring-response', arg)
+  })
+
+  ipcMain.on('generate-json-response', (event, arg) => {
+    mainWindow.webContents.send('generate-json-response', arg)
   })
 
   ipcMain.on('filter-response', (event, arg) => {

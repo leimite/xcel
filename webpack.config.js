@@ -105,7 +105,7 @@ module.exports = function () {
       }
       ]
     },
-    devtool: isProd ? '#source-map' : '#eval-source-map',
+    devtool: isProd ? '#source-map' : '#cheap-module-source-map',
     devServer: {
       contentBase: path.join(__dirname, 'app/dist')
       // watch: true,

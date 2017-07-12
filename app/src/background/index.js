@@ -1,5 +1,7 @@
 'use strict'
-const { ipcRenderer } = require('electron')
+const {
+  ipcRenderer
+} = require('electron')
 const filterUtils = require('./filterUtils')
 const Excel = require('./excelUtils')
 const generateHTMLString = require('./generateHTMLString')
@@ -13,18 +15,18 @@ let oriRow = {}
 let filRow = {}
 
 window.addEventListener('load', event => {
-  console.log('11111111111111')
-  console.log(event);
-  console.log('11111111111111')
-  ipcRenderer.on('readFile-start', (event, { data, activeSheetIndex }) => {
-        /* excelData 的数据结构
-        {
-          sheetNameN: [] 所有行
-          sheetNameN_headers: [] 所有列标题
-          sheetNameList: []
-          workbook: {} Excel 相关
-        }
-        */
+  ipcRenderer.on('readFile-start', (event, {
+    data,
+    activeSheetIndex
+  }) => {
+    /* excelData 的数据结构
+    {
+      sheetNameN: [] 所有行
+      sheetNameN_headers: [] 所有列标题
+      sheetNameList: []
+      workbook: {} Excel 相关
+    }
+    */
     excelData = new Excel().init(data)
     oriRow = {}
     filRow = {}
@@ -48,6 +50,11 @@ window.addEventListener('load', event => {
       })
     })
 
+    ipcRenderer.send('generate-json-response', {
+        sheetData: curSheetData,
+        colKeys: curColKeys
+    })
+
     ipcRenderer.send('readFile-response', {
       oriRow,
       filRow,
@@ -56,11 +63,17 @@ window.addEventListener('load', event => {
       sheetNameList: excelData.sheetNameList
     })
   })
-  ipcRenderer.on('filter-start', (event, { activeSheetName, filterTagList, filterWay, uniqueCols }) => {
-    filteredData = filterHandler({ filterTagList, filterWay, uniqueCols })
-    console.log(111111111111);
-    console.log(filteredData);
-    console.log(111111111111);
+  ipcRenderer.on('filter-start', (event, {
+    activeSheetName,
+    filterTagList,
+    filterWay,
+    uniqueCols
+  }) => {
+    filteredData = filterHandler({
+      filterTagList,
+      filterWay,
+      uniqueCols
+    })
     const curColKeys = colKeys[activeSheetName]
     const tempFilRow = {}
 
@@ -78,10 +91,26 @@ window.addEventListener('load', event => {
         colKeys: curColKeys
       })
     })
+
+    ipcRenderer.send('generate-json-response', {
+      sheetJSON: {
+        sheetData: filteredData[activeSheetName],
+        colKeys: curColKeys
+      }
+    })
   })
 
-  ipcRenderer.on('changeTab-start', (event, { activeSheetName, filterTagList, filterWay, uniqueCols }) => {
-    filteredData = filterHandler({ filterTagList, filterWay, uniqueCols })
+  ipcRenderer.on('changeTab-start', (event, {
+    activeSheetName,
+    filterTagList,
+    filterWay,
+    uniqueCols
+  }) => {
+    filteredData = filterHandler({
+      filterTagList,
+      filterWay,
+      uniqueCols
+    })
     const curColKeys = colKeys[activeSheetName]
 
     ipcRenderer.send('generate-htmlstring-response', {
@@ -97,10 +126,14 @@ window.addEventListener('load', event => {
       filteredData,
       excelData
     })
-    ipcRenderer.send('exportFile-response', { info: '成功导出' })
+    ipcRenderer.send('exportFile-response', {
+      info: '成功导出'
+    })
   })
 
-  ipcRenderer.on('delAllFilterTag-start', (event, { activeSheetName }) => {
+  ipcRenderer.on('delAllFilterTag-start', (event, {
+    activeSheetName
+  }) => {
     const curColKeys = colKeys[activeSheetName]
     const curSheetData = excelData[activeSheetName]
 
@@ -113,7 +146,11 @@ window.addEventListener('load', event => {
   })
 }, false)
 
-function filterHandler ({ filterTagList, filterWay, uniqueCols }) {
+function filterHandler({
+  filterTagList,
+  filterWay,
+  uniqueCols
+}) {
   const tempFilteredData = Object.assign({}, excelData)
   for (let i = 0, len = excelData.sheetNameList.length; i < len; i++) {
     const curSheetName = excelData.sheetNameList[i]
@@ -130,7 +167,7 @@ function filterHandler ({ filterTagList, filterWay, uniqueCols }) {
           const tagLogicChar = cTag.logicOperator === 'and' ? '&&' : '||'
           let groupExpStr = ''
 
-                    // 遍历当前组的 filters
+          // 遍历当前组的 filters
           cFilters.forEach((cF, index) => {
             const filterLogicChar = cF.logicOperator === 'and' ? '&&' : '||'
             const filterType = cF.filterType
@@ -142,11 +179,31 @@ function filterHandler ({ filterTagList, filterWay, uniqueCols }) {
             let oneFilterResult
 
             if (filterType === 0) {
-              oneFilterResult = (filterUtils.filterByOneOperator({ row, colKeys, filterCol, operator, target }))
+              oneFilterResult = (filterUtils.filterByOneOperator({
+                row,
+                colKeys,
+                filterCol,
+                operator,
+                target
+              }))
             } else if (filterType === 1) {
-              oneFilterResult = (filterUtils.filterByMultiColCalc({ row, colKeys, filterCol, operator, target, colOperator }))
+              oneFilterResult = (filterUtils.filterByMultiColCalc({
+                row,
+                colKeys,
+                filterCol,
+                operator,
+                target,
+                colOperator
+              }))
             } else if (filterType === 2) {
-              oneFilterResult = (filterUtils.filterByDoubleColsRange({ row, colKeys, filterCol, operator, target, needConformColIndex }))
+              oneFilterResult = (filterUtils.filterByDoubleColsRange({
+                row,
+                colKeys,
+                filterCol,
+                operator,
+                target,
+                needConformColIndex
+              }))
             }
             groupExpStr = groupExpStr + filterLogicChar + oneFilterResult
 
@@ -182,7 +239,7 @@ function filterHandler ({ filterTagList, filterWay, uniqueCols }) {
   return tempFilteredData
 }
 
-function uniqBy (arr, selectedColKeys) {
+function uniqBy(arr, selectedColKeys) {
   const seen = {}
   return arr.filter(item => {
     const k = key(item, selectedColKeys)
@@ -190,7 +247,7 @@ function uniqBy (arr, selectedColKeys) {
   })
 }
 
-function key (item, selectedColKeys) {
+function key(item, selectedColKeys) {
   const filterItem = {}
   for (let i = 0, len = selectedColKeys.length; i < len; i++) {
     const key = selectedColKeys[i]
