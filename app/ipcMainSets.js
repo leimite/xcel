@@ -222,13 +222,22 @@ module.exports = function (mainWindow, backgroundWindow) {
   ipcMain.on('sync-close', (event, arg) => {
     mainWindow.close()
   })
+
+  // 与 new BrowserWindow 初始化时不同（忽略x、y时会自动居中），而 setBounds 则不可省略 x、y
+  // electron.screen 需要在 app.ready 后获取
+  let windowBounds = {
+    width: 1280,
+    height: 850
+  }
   ipcMain.on('sync-maximize', (event, arg) => {
-    let windowBounds = {
-      width: 1280,
-      height: 850
-    }
     if (mainWindow.isMaximized()) {
-      mainWindow.setBounds(windowBounds)
+      // 默认全屏时，需要计算居中时的 x、y
+      if (typeof windowBounds.x === 'undefined') {
+        const workAreaSize = electron.screen.getPrimaryDisplay().workAreaSize
+        windowBounds.x = (workAreaSize.width - 1280) / 2
+        windowBounds.y = (workAreaSize.height - 850) / 2
+      }
+      mainWindow.setBounds(windowBounds, true)
     } else {
       windowBounds = mainWindow.getBounds()
       mainWindow.maximize()
