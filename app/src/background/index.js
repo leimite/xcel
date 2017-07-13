@@ -50,10 +50,10 @@ window.addEventListener('load', event => {
       })
     })
 
-    ipcRenderer.send('generate-json-response', {
-        sheetData: curSheetData,
-        colKeys: curColKeys
-    })
+    // ipcRenderer.send('generate-json-response', {
+    //     sheetData: curSheetData,
+    //     colKeys: curColKeys
+    // })
 
     ipcRenderer.send('readFile-response', {
       oriRow,
@@ -92,12 +92,13 @@ window.addEventListener('load', event => {
       })
     })
 
-    ipcRenderer.send('generate-json-response', {
-      sheetJSON: {
-        sheetData: filteredData[activeSheetName],
-        colKeys: curColKeys
-      }
-    })
+    // ipcRenderer.send('generate-json-response', {
+    //   sheetJSON: {
+    //     sheetData: filteredData[activeSheetName],
+    //     colKeys: curColKeys
+    //   }
+    // })
+
   })
 
   ipcRenderer.on('changeTab-start', (event, {

@@ -144,9 +144,9 @@ module.exports = function (mainWindow, backgroundWindow) {
     mainWindow.webContents.send('generate-htmlstring-response', arg)
   })
 
-  ipcMain.on('generate-json-response', (event, arg) => {
-    mainWindow.webContents.send('generate-json-response', arg)
-  })
+  // ipcMain.on('generate-json-response', (event, arg) => {
+  //   mainWindow.webContents.send('generate-json-response', arg)
+  // })
 
   ipcMain.on('filter-response', (event, arg) => {
     mainWindow.webContents.send('filter-response', arg)

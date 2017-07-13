@@ -8,7 +8,7 @@ const config = {
   name: pkg.product,
 
   // webpack-dev-server port
-  port: 9080,
+  port: 9780,
 
   // electron-packager options
   // Docs: https://github.com/electron-userland/electron-packager/blob/master/docs/api.md

@@ -52,9 +52,9 @@ export default {
       // console.log(sheetHTML);
       this.sheetHTML = sheetHTML
     })
-    ipcRenderer.on('generate-json-response', (event, { sheetData,colKeys}) => {
-      console.log(colKeys);
-    })
+    // ipcRenderer.on('generate-json-response', (event, { sheetData,colKeys}) => {
+    //   console.log(colKeys);
+    // })
 
     const dropArea = document.querySelector('.drop_area')
     if (dropArea) {
