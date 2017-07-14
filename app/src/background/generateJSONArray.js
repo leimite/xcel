@@ -14,8 +14,8 @@ module.exports = function generateJSONArray({ sheetData, colKeys }) {
     for (let j = 0, len = colKeys.length; j < len; j++) {
       const col = colKeys[j]
       let val = sheetData[i][col]
-      if (typeof val === 'undefined') val = []
-      tempArr.push([val])
+      if (typeof val === 'undefined') val = ''
+      tempArr.push(val)
     }
     resultValue[i] = tempArr
   }
@@ -24,5 +24,5 @@ module.exports = function generateJSONArray({ sheetData, colKeys }) {
   colKeys = null
   result['dateLabel'] = resultLabel
   result['dateValue'] = resultValue
-  return reuslt
+  return result
 }

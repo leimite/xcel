@@ -21,8 +21,8 @@
         </sheet-of-excel>
       </div>
       <div class="chart_container" v-else>
-        <!-- <chart-of-excel v-for="(sheetName, index) in sheetNameList" :key="index" v-show="activeSheet.index === index" :dateLabel="dateLabel" :dateValue="dateValue">
-            </chart-of-excel> -->
+        <chart-of-excel v-for="(sheetName, index) in sheetNameList" :key="index" v-show="activeSheet.index === index" :dateLabel="dateLabel" :dateValue="dateValue">
+        </chart-of-excel>
       </div>
     </div>
   </div>
@@ -39,7 +39,7 @@ import ChartOfExcel from './ChartOfExcel'
 export default {
   components: {
     SheetOfExcel,
-    // ChartOfExcel
+    ChartOfExcel
   },
   data() {
     return {
@@ -49,15 +49,6 @@ export default {
     }
   },
   mounted() {
-    ipcRenderer.on('readFile-response', (event, { oriRow, filRow, colKeys, filterTagList, sheetNameList }) => {
-      console.log(oriRow); // 原始行 object {表名:69}
-      console.log(filRow); // 过滤后行 object {表名:69}
-      console.log(colKeys); // 列字段 object {表名:[列字段1，列字段2,……]}
-      console.log(filterTagList); // 过滤的标签?
-      console.log(sheetNameList); // array [表名]
-    })
-
-    //
     ipcRenderer.on('generate-htmlstring-response', (event, { sheetHTML }) => {
       // console.log(sheetHTML);
       this.sheetHTML = sheetHTML
