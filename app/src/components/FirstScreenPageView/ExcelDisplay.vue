@@ -16,8 +16,14 @@
           <img src="../assets/svg/excel_display_warm.svg" alt="[警告]">当前没有选中任何Excel文件，可将文件拖拽至此区域。
         </p>
       </div>
-      <sheet-of-excel v-for="(sheetName, index) in sheetNameList" :key="index" v-show="activeSheet.index === index" :sheetHTML="sheetHTML">
-      </sheet-of-excel>
+      <div class="execl_contianer" v-if="vuexFilterWay==0">
+        <sheet-of-excel v-for="(sheetName, index) in sheetNameList" :key="index" v-show="activeSheet.index === index" :sheetHTML="sheetHTML">
+        </sheet-of-excel>
+      </div>
+      <div class="chart_container" v-else>
+        <!-- <chart-of-excel v-for="(sheetName, index) in sheetNameList" :key="index" v-show="activeSheet.index === index" :dateLabel="dateLabel" :dateValue="dateValue">
+          </chart-of-excel> -->
+      </div>
     </div>
   </div>
 </template>
@@ -28,18 +34,22 @@ import { ipcRenderer } from 'electron'
 import { isExcelFile } from '../../utils/ExcelSet'
 import { mapGetters, mapActions } from 'vuex'
 import SheetOfExcel from './SheetOfExcel'
+import ChartOfExcel from './ChartOfExcel'
 
 export default {
   components: {
-    SheetOfExcel
+    SheetOfExcel,
+    // ChartOfExcel
   },
   data() {
     return {
-      sheetHTML: ''
+      sheetHTML: '',
+      dateLabel: [],
+      dateValue: []
     }
   },
   mounted() {
-    ipcRenderer.on('readFile-response', (event, { oriRow,filRow,colKeys,filterTagList,sheetNameList }) => {
+    ipcRenderer.on('readFile-response', (event, { oriRow, filRow, colKeys, filterTagList, sheetNameList }) => {
       console.log(oriRow); // 原始行 object {表名:69}
       console.log(filRow); // 过滤后行 object {表名:69}
       console.log(colKeys); // 列字段 object {表名:[列字段1，列字段2,……]}
@@ -48,13 +58,16 @@ export default {
     })
 
     //
-    ipcRenderer.on('generate-htmlstring-response', (event, { sheetHTML}) => {
+    ipcRenderer.on('generate-htmlstring-response', (event, { sheetHTML }) => {
       // console.log(sheetHTML);
       this.sheetHTML = sheetHTML
     })
-    // ipcRenderer.on('generate-json-response', (event, { sheetData,colKeys}) => {
-    //   console.log(colKeys);
-    // })
+    ipcRenderer.on('generate-json-response', (event, { sheetData, colKeys }) => {
+      console.log(colKeys)
+      console.log(sheetData)
+      this.dateLabel = colKeys
+      this.dateValue = sheetData
+    })
 
     const dropArea = document.querySelector('.drop_area')
     if (dropArea) {
@@ -68,6 +81,11 @@ export default {
     }
   },
   computed: {
+    vuexFilterWay: {
+      get() {
+        return this.filterWay || 0
+      }
+    },
     ...mapGetters({
       activeSheet: 'getActiveSheet',
       filterTagList: 'getFilterTagList',
