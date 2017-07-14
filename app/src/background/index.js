@@ -5,6 +5,7 @@ const {
 const filterUtils = require('./filterUtils')
 const Excel = require('./excelUtils')
 const generateHTMLString = require('./generateHTMLString')
+const generateJSONArray = require('./generateJSONArray')
 const SUFFIX_COLKEYS = '_headers'
 console.log('background进程pid：', process.pid)
 
@@ -51,8 +52,10 @@ window.addEventListener('load', event => {
     })
 
     ipcRenderer.send('generate-json-response', {
+      sheetJSON: generateJSONArray({
         sheetData: curSheetData,
         colKeys: curColKeys
+      })
     })
 
     ipcRenderer.send('readFile-response', {

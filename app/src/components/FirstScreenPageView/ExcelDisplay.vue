@@ -22,7 +22,7 @@
       </div>
       <div class="chart_container" v-else>
         <!-- <chart-of-excel v-for="(sheetName, index) in sheetNameList" :key="index" v-show="activeSheet.index === index" :dateLabel="dateLabel" :dateValue="dateValue">
-          </chart-of-excel> -->
+            </chart-of-excel> -->
       </div>
     </div>
   </div>
@@ -62,11 +62,10 @@ export default {
       // console.log(sheetHTML);
       this.sheetHTML = sheetHTML
     })
-    ipcRenderer.on('generate-json-response', (event, { sheetData, colKeys }) => {
-      console.log(colKeys)
-      console.log(sheetData)
-      this.dateLabel = colKeys
-      this.dateValue = sheetData
+    ipcRenderer.on('generate-json-response', (event, { sheetJSON }) => {
+      console.log(sheetJSON)
+      this.dateLabel = sheetJSON.dateLabel
+      this.dateValue = sheetJSON.dateValue
     })
 
     const dropArea = document.querySelector('.drop_area')
