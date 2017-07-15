@@ -32,6 +32,7 @@ export default {
           axisX: this.dateLabel.slice(3).concat(['示例']),
           values: this.dateValue[i].slice(3).concat(['08:00 20:00'])
         })
+        .titleText(this.dateValue[i][0] + '考勤图表') // 图表标题
         .stackLabelCustom({
           'workBefore': 'Are you Ready?'
         })
@@ -66,6 +67,7 @@ export default {
 
 
 
+
 /* Creates a small triangle extender for the tooltip */
 
 .d3-tip:after {
@@ -78,6 +80,7 @@ export default {
   position: absolute;
   pointer-events: none;
 }
+
 
 
 
@@ -95,6 +98,7 @@ export default {
 
 
 
+
 /* Eastward tooltips */
 
 .d3-tip.e:after {
@@ -103,6 +107,7 @@ export default {
   top: 50%;
   left: -8px;
 }
+
 
 
 
@@ -116,6 +121,7 @@ export default {
   left: 0;
   text-align: center;
 }
+
 
 
 

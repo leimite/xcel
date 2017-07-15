@@ -54,7 +54,7 @@ export default {
       this.sheetHTML = sheetHTML
     })
     ipcRenderer.on('generate-json-response', (event, { sheetJSON }) => {
-      console.log(sheetJSON)
+      // console.log(sheetJSON)
       this.dateLabel = sheetJSON.dateLabel
       this.dateValue = sheetJSON.dateValue
     })
